@@ -13,8 +13,9 @@
 #   - Handle errors ONLY during the runtime!!!
 #   - Translate the neat error messages from Kathleen
 
-DEBUG = True           # If true, extra info in terminal. Disable in prod
-STRING_DELIMITER = '"' # Char used to delimit "strings"
+DEBUG = False            # If true, extra info in terminal. Disable in prod
+STRING_DELIMITER = '"'  # Char used to delimit "strings"
+INSTRUCTION_ENDER = '!' # Normally a semicolon
 
 source_file_path = "test.pp" # temporary -- to be provided by user later
 
@@ -65,6 +66,9 @@ for line in code_lines:
 
 if DEBUG: print(tokenised_code_lines)
 
+# Create a linear stream of Tokens
+tokens = []
+
 # class that holds information about each token
 class Token:
   def __init__(self, value, line):
@@ -73,9 +77,6 @@ class Token:
   def __str__(self):
     # Neatly display our object becuase python can't do it by itself
     return f"Token:\n  value : \"{self.value}\"\n  line  : {self.line}"  
-
-# Create a linear stream of Tokens
-tokens = []
 
 for index_of_line, line in enumerate(tokenised_code_lines):
   for token in line:
@@ -89,3 +90,35 @@ for index_of_line, line in enumerate(tokenised_code_lines):
 if DEBUG:
   for token in tokens: print(token)
 
+while True:
+  # process tokens lol
+  for index_of_token, token in enumerate(tokens):
+    if token.value == INSTRUCTION_ENDER:
+      index_of_ender = index_of_token
+      break
+  
+  # Main loop -- we process tokens here
+  # The opcode is the first token in an instruction. It defines the instruction.
+  # Example: print variable1 !
+  # print is the opcode, variable1 is the first argument
+  opcode = tokens[0].value
+  # EXAMPLE: arg1 = tokens[1].value
+  match opcode:
+
+    case "test":
+      print("test to you too")
+
+    
+    # If the opcode is not recognised
+    case _:
+      print(f"ERROR: unknown opcode: {opcode} 💀💀💀")
+
+
+  # delete all tokens until the semicolon
+  for x in range(index_of_ender+1):
+    tokens.pop(0)
+
+  # If it's joever, exit the loop
+  if len(tokens) == 0:
+    break
+exit
