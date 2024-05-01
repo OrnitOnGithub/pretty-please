@@ -15,6 +15,8 @@
 #     - Or not lol. keep it ugly.
 
 # for sentiment analysis
+import nltk
+nltk.download('vader_lexicon')
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 analyzer = SentimentIntensityAnalyzer()
 def sentiment(text):
