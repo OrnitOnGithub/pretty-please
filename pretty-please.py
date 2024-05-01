@@ -6,9 +6,10 @@
 #   - A single Token should contain enough information for error handling
 #     - Its value (str)
 #     - Line (int)
-# - Split into instructions (everything in-between semicolons)
-# - Iterate over instructions
+# - Iterate over tokens
 #   - Do the funny shit
+#   - Delete everything before the first semicolon
+#   - Iterate again, but over the new mutated list this time
 # - ERRORS:
 #   - Handle errors ONLY during the runtime!!!
 #   - Translate the neat error messages from Kathleen
