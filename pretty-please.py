@@ -13,15 +13,27 @@
 #   - Handle errors ONLY during the runtime!!!
 #   - Translate the neat error messages from Kathleen
 
-DEBUG = False            # If true, extra info in terminal. Disable in prod
-STRING_DELIMITER = '"'  # Char used to delimit "strings"
-INSTRUCTION_ENDER = '!' # Normally a semicolon
+# for sentiment analysis
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+analyzer = SentimentIntensityAnalyzer()
+def sentiment(text):
+    scores = analyzer.polarity_scores(text)
+    sentiment = scores['compound']
+    return round(sentiment * SENTIMENT_MULTIPLIER)
 
-source_file_path = "test.pp" # temporary -- to be provided by user later
+from colorama import Fore, Style
+import random
+
+DEBUG                = False  # If true, extra info in terminal. Disable in prod
+STRING_DELIMITER     = '"'    # Char used to delimit "strings"
+INSTRUCTION_ENDER    = '!'    # Normally a semicolon
+SENTIMENT_MULTIPLIER = 5
+
+SOURCE_FILE_PATH = "test.prettyplease" # temporary -- to be provided by user later
 
 
 # Load file contents to memory
-with open(source_file_path, "r") as source_file:
+with open(SOURCE_FILE_PATH, "r") as source_file:
   # get list of str, each str being a line
   code_lines = source_file.readlines();
 
@@ -90,29 +102,63 @@ for index_of_line, line in enumerate(tokenised_code_lines):
 if DEBUG:
   for token in tokens: print(token)
 
+# positive: feeling great
+# nefative: angy
+interpret_mood = 0
+
 while True:
+  if DEBUG: print("mood: " + str(interpret_mood))
   # process tokens lol
   for index_of_token, token in enumerate(tokens):
     if token.value == INSTRUCTION_ENDER:
       index_of_ender = index_of_token
       break
-  
-  # Main loop -- we process tokens here
-  # The opcode is the first token in an instruction. It defines the instruction.
-  # Example: print variable1 !
-  # print is the opcode, variable1 is the first argument
-  opcode = tokens[0].value
-  # EXAMPLE: arg1 = tokens[1].value
-  match opcode:
 
-    case "test":
-      print("test to you too")
+  feels_like_it = True
 
-    
-    # If the opcode is not recognised
-    case _:
-      print(f"ERROR: unknown opcode: {opcode} 💀💀💀")
+  # If the interpret is grumpy, 50% chance it won't do as told
+  if interpret_mood < 0:
+    if random.randint(0, 1) == 1:
+      feels_like_it = False
+  if tokens[0].value == '/':
+    # however always read comments. so that you get to redeem yourself
+    feels_like_it = True
 
+  if feels_like_it:
+    # Main loop -- we process tokens here
+    # The opcode is the first token in an instruction. It defines the instruction.
+    # Example: print variable1 !
+    # print is the opcode, variable1 is the first argument
+    opcode = tokens[0].value
+    # EXAMPLE: arg1 = tokens[1].value
+    match opcode:
+
+      case "test":
+        if interpret_mood < 2:
+          print("I don't feel like testing right now. Maybe if you asked kindly.")
+        else:
+          print("TEST: test to you too!")
+
+      case "/":
+        # Do the funny sentiment analysis
+        if DEBUG: print("encountered comment")
+        data = [tokens[token] for token in range(1, index_of_ender)]
+        sentence = ""
+        for token in data:
+          sentence += token.value + " "
+        if DEBUG: print(sentence)
+        feeling = sentiment(sentence)
+        if DEBUG: print(feeling)
+        interpret_mood += feeling
+        if feeling > 0:
+          print(Fore.GREEN + "That's kind of you. Thanks" + Style.RESET_ALL)
+        else:
+          print("That's rude.")
+
+      # If the opcode is not recognised
+      case _:
+        print(Fore.RED + f"ERROR: unknown opcode: {opcode}. This makes me unhappy." + Style.RESET_ALL)
+        interpret_mood -= 2 # make the interpret sadder
 
   # delete all tokens until the semicolon
   for x in range(index_of_ender+1):
