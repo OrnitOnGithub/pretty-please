@@ -37,6 +37,15 @@ Comments start with a slash and end with an exclamation mark, just like every in
 ```
 Comments can help you make code clearer, but beware: **the interpret can read them**. If your comments are rude, you'll make it grumpier. The opposite applies as well.
 
+### Hello World!
+
+Writing a hello world program is stupidly simple!
+```
+helloworld!
+```
+There you go!
+
+Make sure the compiler is happy. Otherwise it might say goobye world instead...
 ### testing
 
 `test`: An instruction that does nothing relevant. Prints a small response in the terminal.

@@ -12,6 +12,7 @@
 # - ERRORS:
 #   - Handle errors ONLY during the runtime!!!
 #   - Translate the neat error messages from Kathleen
+#     - Or not lol. keep it ugly.
 
 # for sentiment analysis
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
@@ -39,7 +40,6 @@ with open(SOURCE_FILE_PATH, "r") as source_file:
 
 # tokenise the text
 tokenised_code_lines = []
-
 # I will not document this algorithm because it is a copy of Kathleen's implementation in Rust
 # https://github.com/OrnitOnGithub/kathleen/blob/master/src/tokenizer.rs
 # For more information refer to that.
@@ -116,6 +116,11 @@ while True:
 
   feels_like_it = True
 
+  # sometimes, the compiler may feel like there is too much work to do.
+  if random.randint(0,10) == 1:
+    print(Fore.RED + "So much work..." + Style.RESET_ALL)
+    interpret_mood -= 2
+
   # If the interpret is grumpy, 50% chance it won't do as told
   if interpret_mood < 0:
     if random.randint(0, 1) == 1:
@@ -139,6 +144,20 @@ while True:
         else:
           print("TEST: test to you too!")
 
+      case "helloworld":
+        if interpret_mood < -2:
+          print("Goodbye, world...")
+          break
+        else:
+          print("Hello, World!")
+
+      case "mkint":
+        # create an integer
+        # We will hold all integers in a dict
+        # there will be no memory managment.
+        # Actually, if the compiler is anrgy it might delete an int.
+        pass
+
       case "/":
         # Do the funny sentiment analysis
         if DEBUG: print("encountered comment")
@@ -153,11 +172,11 @@ while True:
         if feeling > 0:
           print(Fore.GREEN + "That's kind of you. Thanks" + Style.RESET_ALL)
         else:
-          print("That's rude.")
+          print(Fore.RED + "That's rude." + Style.RESET_ALL)
 
       # If the opcode is not recognised
       case _:
-        print(Fore.RED + f"ERROR: unknown opcode: {opcode}. This makes me unhappy." + Style.RESET_ALL)
+        print(Fore.RED + f"ERROR at line {tokens[0].line}: unknown opcode: {opcode}. This makes me unhappy." + Style.RESET_ALL)
         interpret_mood -= 2 # make the interpret sadder
 
   # delete all tokens until the semicolon
