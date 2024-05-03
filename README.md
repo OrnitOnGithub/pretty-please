@@ -34,6 +34,7 @@ opcode arg1 arg2 ... !
 Comments start with a slash and end with an exclamation mark, just like every instruction. (Technically, `/` is the opcode here)
 ```
 / this is a comment !
+dosomething!  / this is a comment !
 ```
 Comments can help you make code clearer, but beware: **the interpret can read them**. If your comments are rude, you'll make it grumpier. The opposite applies as well.
 
