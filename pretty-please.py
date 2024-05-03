@@ -1,39 +1,49 @@
-# - Read input file
-#   - command line interface
-#     - read and handle parameters
-#     - show help menu
-# - Tokenize (split by token, special chars, etc, unify strings.)
-#   - A single Token should contain enough information for error handling
-#     - Its value (str)
-#     - Line (int)
-# - Iterate over tokens
-#   - Do the funny shit
-#   - Delete everything before the first semicolon
-#   - Iterate again, but over the new mutated list this time
-# - ERRORS:
-#   - Handle errors ONLY during the runtime!!!
-#   - Translate the neat error messages from Kathleen
-#     - Or not lol. keep it ugly.
+# DONE - Read input file
+# TODO   - command line interface
+# TODO     - read and handle parameters
+# TODO     - show help menu
+# DONE - Tokenize (split by token, special chars, etc, unify strings.)
+# DONE   - A single Token should contain enough information for error handling
+# DONE     - Its value (str)
+# DONE     - Line (int)
+# DONE - Iterate over tokens
+# TODO   - Do the funny shit
+# DONE   - Delete everything before the first semicolon
+# DONE   - Iterate again, but over the new mutated list this time
+# DONE - ERRORS:
+# DONE   - Handle errors ONLY during the runtime!!!
+# TODO   - Translate the neat error messages from Kathleen
+# DONE     - Or not lol. keep it ugly.
 
-# for sentiment analysis
+
 import nltk
 nltk.download('vader_lexicon')
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 analyzer = SentimentIntensityAnalyzer()
-def sentiment(text):
-    scores = analyzer.polarity_scores(text)
-    sentiment = scores['compound']
-    return round(sentiment * SENTIMENT_MULTIPLIER)
-
 from colorama import Fore, Style
 import random
+
+
 
 DEBUG                = False  # If true, extra info in terminal. Disable in prod
 STRING_DELIMITER     = '"'    # Char used to delimit "strings"
 INSTRUCTION_ENDER    = '!'    # Normally a semicolon
 SENTIMENT_MULTIPLIER = 5
 
-SOURCE_FILE_PATH = "test.prettyplease" # temporary -- to be provided by user later
+# temporary -- to be provided by user later through CLI
+SOURCE_FILE_PATH = "test.prettyplease"
+
+
+def sentiment(text: str) -> int:
+  """
+  does semtiment analysis. \n
+  takes a piece of text (str) as parameter and returns a value
+  - positive if positive sentiment (0 to 5)
+  - negative if negative sentiment (0 to -5)
+  """
+  scores = analyzer.polarity_scores(text)
+  sentiment = scores['compound']
+  return round(sentiment * SENTIMENT_MULTIPLIER)
 
 
 # Load file contents to memory
@@ -81,16 +91,22 @@ for line in code_lines:
 
 if DEBUG: print(tokenised_code_lines)
 
-# Create a linear stream of Tokens
+
+# now we create a linear stream of tokens using the Token class
 tokens = []
 
 # class that holds information about each token
 class Token:
+  """
+  used to hold information about tokens.
+  - token value (str) (the token itself, like "print" or "test idk)
+  - token line (int) (the line the token is at. starts at 1, like in most code editors)
+  """
   def __init__(self, value, line):
     self.value = value
     self.line = line   # this will mostly be used for errors i think.
   def __str__(self):
-    # Neatly display our object becuase python can't do it by itself
+    # Neatly display our object becuase python can't do it by itself...
     return f"Token:\n  value : \"{self.value}\"\n  line  : {self.line}"  
 
 for index_of_line, line in enumerate(tokenised_code_lines):
@@ -105,21 +121,27 @@ for index_of_line, line in enumerate(tokenised_code_lines):
 if DEBUG:
   for token in tokens: print(token)
 
+# variable that keeps track of how the interpret is "feeling"
 # positive: feeling great
-# nefative: angy
+# negative: angy
 interpret_mood = 0
 
+# MAIN LOOP
+# Interpretation happens here
 while True:
   if DEBUG: print("mood: " + str(interpret_mood))
-  # process tokens lol
+
+  # find index of instruction ender ("!")
   for index_of_token, token in enumerate(tokens):
     if token.value == INSTRUCTION_ENDER:
       index_of_ender = index_of_token
       break
 
+  # variable that defines whether the interpret will interpret or sulk (not interpret).
   feels_like_it = True
 
   # sometimes, the compiler may feel like there is too much work to do.
+  # so, 1/10 chance to reduce the interpret's mood
   if random.randint(0,10) == 1:
     print(Fore.RED + "So much work..." + Style.RESET_ALL)
     interpret_mood -= 2
@@ -128,12 +150,14 @@ while True:
   if interpret_mood < 0:
     if random.randint(0, 1) == 1:
       feels_like_it = False
+  
+  # if the opcode is /, this is a comment. Always read comments.
   if tokens[0].value == '/':
-    # however always read comments. so that you get to redeem yourself
+    # always read comments. so that you get to redeem yourself
     feels_like_it = True
 
   if feels_like_it:
-    # Main loop -- we process tokens here
+    # Main match-case -- we process tokens here
     # The opcode is the first token in an instruction. It defines the instruction.
     # Example: print variable1 !
     # print is the opcode, variable1 is the first argument
@@ -142,15 +166,19 @@ while True:
     match opcode:
 
       case "test":
+        # the interpret needs to be relatively cheerful to test
         if interpret_mood < 2:
           print("I don't feel like testing right now. Maybe if you asked kindly.")
         else:
           print("TEST: test to you too!")
 
+      # integrated hello world
       case "helloworld":
+        # if the interpret is really sad
         if interpret_mood < -2:
+          # it may want to kill itself
           print("Goodbye, world...")
-          break
+          break # break out of interpretation loop (commit suicide)
         else:
           print("Hello, World!")
 
@@ -161,6 +189,7 @@ while True:
         # Actually, if the compiler is anrgy it might delete an int.
         pass
 
+      # if opcode is "/" this is a comment
       case "/":
         # Do the funny sentiment analysis
         if DEBUG: print("encountered comment")
