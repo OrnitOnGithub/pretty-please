@@ -54,6 +54,9 @@ Make sure the compiler is happy. Otherwise it might say goobye world instead...
 test
 ```
 
+### REPL
+Just use `repl!` to start a REPL.
+
 ### Errors
 
 If something bad happens, you'll make the interpret sadder. Be careful.
