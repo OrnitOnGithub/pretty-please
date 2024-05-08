@@ -54,6 +54,15 @@ Make sure the compiler is happy. Otherwise it might say goobye world instead...
 test
 ```
 
+### REPL
+Just use `repl!` to start a REPL.
+
+### Variables
+Define public variables using `define us a variable <name> = <integer value>` 
+and private variables through `define me a variable <name> = <integer value>`. 
+Public variables can be accessed when a module from `./lib/` is `import!`ed, 
+private variables can only be accessed from the file (or a file included using `run!`).
+
 ### Errors
 
 If something bad happens, you'll make the interpret sadder. Be careful.
@@ -61,6 +70,9 @@ If something bad happens, you'll make the interpret sadder. Be careful.
 ### By the way,
 
 If the interpret's mad at you there's a chance it will refuse to follow orders.
+
+### Further opcodes
+Look at `startup.prettyplease` for more examples of opcodes.
 
 ## Contribute
 
