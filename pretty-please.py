@@ -23,6 +23,7 @@ analyzer = SentimentIntensityAnalyzer()
 import random
 import os
 from dataclasses import dataclass
+import ctypes # for causing a segfault lol
 
 
 DEBUG                = False  # If true, extra info in terminal. Disable in prod
@@ -314,6 +315,9 @@ def interpret_code(code_lines: list[str], cache: PrettyPleaseModule = PrettyPlea
           # give `cache` as argument
           # the interpreter remembers all code which happened before `repl !`
           repl(cache)
+
+        case "segfault":
+          ctypes.string_at(0) # attempt to read illegal memory, causing segfault
 
         case "mkint":
           # create an integer
