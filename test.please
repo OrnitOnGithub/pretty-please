@@ -1,0 +1,7 @@
+/ has the wrong file extension => make the interpreter sadder !
+/ I am truly sorry for being lazy and not writing test.prettyplease !
+/ Please forgive me, dear interpreter !
+test !
+"give up" !
+/ In reality I ain't sorry !
+/ But I need to raise the interpreter's mood otherwise it wouldn't test !
