@@ -47,6 +47,15 @@ helloworld!
 There you go!
 
 Make sure the compiler is happy. Otherwise it might say goobye world instead...
+
+### Segfault
+
+They say you only become a real programmer once you write your first segmentation fault. With pretty-please, this is also a one-liner!
+
+```
+segfault!
+```
+
 ### testing
 
 `test`: An instruction that does nothing relevant. Prints a small response in the terminal.
