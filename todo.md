@@ -1,4 +1,0 @@
-- variables
-  - with a dynamic dict probably
-  - printing variables
-- 
