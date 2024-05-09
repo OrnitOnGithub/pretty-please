@@ -9,10 +9,13 @@
 
 ## Run it!
 
-edit `test.prettyplease` ! <br>
-run it !
+You can show the help menu with
 ```
-python3 pretty-please.py
+python3 pretty-please.py help
+```
+Create your first program by creating a file, i.e. `myprogram.prettyplease`. You can run it with:
+```
+python3 pretty-please.py myprogram.prettyplease
 ```
 
 ## Learn it!
@@ -82,6 +85,10 @@ If the interpret's mad at you there's a chance it will refuse to follow orders.
 
 ### Further opcodes
 Look at `startup.prettyplease` for more examples of opcodes.
+
+### Visual Studio Code extension
+
+A vscode extension is available! It will later be added to the marketplace, but for now check it out [right here in the repo](./vscode-extension/README.md).
 
 ## Contribute
 
