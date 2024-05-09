@@ -1,0 +1,31 @@
+{
+  "name": "pretty-please",
+  "displayName": "Pretty Please Language",
+  "description": "A syntax highlighting extension for the pretty-please programming language.",
+  "publisher": "Ornithopter747",
+  "icon": "icons/pp-logo.png",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.66.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "prettyplease",
+      "aliases": ["pretty-please", "Pretty Please", "prettyplease"],
+      "extensions": [".prettyplease"],
+      "configuration": "./language-configuration.json",
+      "icon": {
+        "light": "./icons/pp-logo.png",
+        "dark": "./icons/pp-logo.png"
+      }
+    }],
+    "grammars": [{
+      "language": "prettyplease",
+      "scopeName": "source.prettyplease",
+      "path": "./syntaxes/prettyplease.tmLanguage.json"
+    }]
+  }
+}
