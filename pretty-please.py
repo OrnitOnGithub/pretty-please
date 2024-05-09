@@ -1,7 +1,7 @@
 # DONE - Read input file
-# TODO   - command line interface
-# TODO     - read and handle parameters
-# TODO     - show help menu
+# DONE   - command line interface
+# DONE     - read and handle parameters
+# DONE     - show help menu
 # DONE - Tokenize (split by token, special chars, etc, unify strings.)
 # DONE   - A single Token should contain enough information for error handling
 # DONE     - Its value (str)
@@ -23,7 +23,8 @@ analyzer = SentimentIntensityAnalyzer()
 import random
 import os
 from dataclasses import dataclass
-import ctypes # for causing a segfault lol
+import ctypes # for the segfault causing code
+import cli.cli as cli # our command line interface module
 
 
 DEBUG                = False  # If true, extra info in terminal. Disable in prod
@@ -32,7 +33,8 @@ INSTRUCTION_ENDER    = '!'    # Normally a semicolon
 SENTIMENT_MULTIPLIER = 5
 
 # temporary -- to be provided by user later through CLI
-SOURCE_FILE_PATH = "startup.prettyplease"
+SOURCE_FILE_PATH = cli.handle_args()
+
 
 
 def sentiment(text: str) -> int:
