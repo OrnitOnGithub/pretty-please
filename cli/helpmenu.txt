@@ -1,0 +1,12 @@
+PRETTY PLEASE HELP MENU
+-----------------------
+usage:
+`python3 pretty-please.py <arg>
+
+arg:
+  - help             : show this help menu
+  - <path/to/script> : run this script
+  - repl             : start the repl
+
+example usage:
+`python3 pretty-please.py foo.prettyplease`
